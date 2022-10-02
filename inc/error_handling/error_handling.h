@@ -112,7 +112,7 @@ typedef struct
     #define DUMP(logfile) ((void) 0)
 #else
     #define DUMP(logfile)            \
-        fprintf(LOGFILE,             \
+        fprintf(logfile,             \
                 "%s at %s(%d):\n",   \
                 __PRETTY_FUNCTION__, \
                 __FILE__,            \
