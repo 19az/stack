@@ -1,0 +1,8 @@
+doc/
+a.out
+sb.cpp
+stack
+*.o
+flags
+logfile.txt
+run.sh
