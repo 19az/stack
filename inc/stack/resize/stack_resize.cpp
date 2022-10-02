@@ -18,12 +18,6 @@ void StackResize_(Stack* stk, size_t new_size ERR_SUPPORT_DEFN)
 {
     ASSERT(stk != NULL);
 
-    
-    if (new_size < 1)
-    {
-        new_size = 1;
-    }
-
     int is_increase_size = (new_size >= stk->size);
 
     if (is_increase_size && (new_size <= stk->capacity)) return;

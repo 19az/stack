@@ -10,9 +10,9 @@ int main() {
 
     Stack stk1{};
 
-    StackCtor(&stk1, 0);
+    StackCtor(&stk1, 5);
 
-    const size_t n_elems = 6546;
+    const size_t n_elems = 654;
 
     for (size_t index = 0; index < n_elems; index++)
     {
