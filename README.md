@@ -1,2 +1,2 @@
-# stack
+# Stack
 Stack with protection

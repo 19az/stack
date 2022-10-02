@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS =
-include ../debugflags
+include debugflags
 
 EXE = stack
 SOURCES = main.cpp
