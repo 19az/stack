@@ -15,8 +15,8 @@ HASH_TYPE_STACK GetHashStructStack_(const Stack* stk)
 
 HASH_TYPE_STACK GetHashDataStack_(const Stack* stk)
 {
-    return HASH_ALG( (const char*) stk->data,
-                    ((const char*) stk->data) + stk->capacity);
+    return HASH_ALG( (const char*)  stk->data,
+                     (const char*) (stk->data + stk->capacity));
 }
 
 #undef HASH_ALG

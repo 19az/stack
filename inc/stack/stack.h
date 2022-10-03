@@ -13,13 +13,13 @@
 
 struct Stack
 {
+#ifdef CANARY_PROTECT
+    CANARY_STACK l_canary = POISON_CANARY_STACK;
+#endif
+
 #ifdef HASH_PROTECT
     HASH_TYPE_STACK hash_struct_value   = 0;
     HASH_TYPE_STACK hash_data_value     = 0;
-#endif
-
-#ifdef CANARY_PROTECT
-    CANARY_STACK l_canary = POISON_CANARY_STACK;
 #endif
 
     Elem_t*      data     = POISON_ELEM_T_PTR_STACK;

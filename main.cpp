@@ -12,7 +12,7 @@ int main() {
 
     StackCtor(&stk1, 0);
 
-    const size_t n_elems = 6546;
+    const size_t n_elems = 654;
 
     for (size_t index = 0; index < n_elems; index++)
     {
