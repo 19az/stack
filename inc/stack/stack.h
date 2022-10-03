@@ -18,8 +18,8 @@ struct Stack
 #endif
 
 #ifdef HASH_PROTECT
-    HASH_TYPE_STACK hash_struct_value   = 0;
-    HASH_TYPE_STACK hash_data_value     = 0;
+    HASH_TYPE_STACK hash_struct_value = 0;
+    HASH_TYPE_STACK hash_data_value   = 0;
 #endif
 
     Elem_t*      data     = POISON_ELEM_T_PTR_STACK;
