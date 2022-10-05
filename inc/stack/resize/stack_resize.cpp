@@ -1,24 +1,31 @@
 
-#include "stack_resize.h"
+/// @brief Позволяет добавить в StackResizeDump_() дамп информацию
+/// о месте вызова дампа
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifdef NDEBUG
-    #define StackResizeDump(stk) ((void) 0)
+    #define StackResizeDump(logfile, stk) ((void) 0)
 #else
-    #define StackResizeDump(stk)                  \
-        DUMP(LOGFILE);                            \
+    #define StackResizeDump(logfile, stk)         \
+        DUMP(logfile);                            \
                                                   \
-        StackResizeDump_(LOGFILE, stk, new_size);
+        StackResizeDump_(logfile, stk, new_size);
 #endif
 
-const double CONST_CAPACITY = 8;    ///< statring constant for StackResize_()
-const double EXP_CAPACITY   = 2;    ///< exponent for StackResize_()
-const double HYST_CAPACITY  = 0.3;  ///< "hysteresis" value for StackResize_()
+const double CONST_CAPACITY = 8;    ///< константный размер массива
+                                    ///  для стекаStackResize_()
+const double EXP_CAPACITY   = 2;    ///< экспонента увеличения массива
+                                    ///  для StackResize_()
+const double HYST_CAPACITY  = 0.3;  ///< значение "гистеризеса"
+                                    ///  для StackResize_()
 
 void StackResize_(Stack* stk, size_t new_size ERR_SUPPORT_DEFN)
 {
     ASSERT(stk != NULL);
 
-    
     if (new_size < 1)
     {
         new_size = 1;
@@ -85,7 +92,7 @@ void StackResize_(Stack* stk, size_t new_size ERR_SUPPORT_DEFN)
     if (stk->data == NULL
         ERR_HANDLED_MSSG(LOGFILE, ERR_REALLOC_STACK))
     {
-        StackResizeDump(stk);
+        StackResizeDump(LOGFILE, stk);
 
         return;
     }
@@ -100,15 +107,16 @@ void StackResize_(Stack* stk, size_t new_size ERR_SUPPORT_DEFN)
 
 void StackResizeDump_(FILE* logfile, const Stack* stk, size_t new_size)
 {
-    ASSERT(logfile != NULL);
     ASSERT(stk     != NULL);
+
+    if (logfile == NULL) logfile = stderr;
 
     fprintf(logfile,
             "Resize. Params: stk = %p new_size = %lu\n",
             stk, new_size);
     fflush(logfile);
 
-    StackDump(stk);
+    StackDump(logfile, stk);
 }
 
 #undef StackDumpResize

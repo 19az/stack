@@ -1,6 +1,9 @@
 
-#include "stack_error.h"
+#include <stdlib.h>
 
+/// @brief Проверяет условие ошибки, если оно истинно,
+/// пишет сообщение об ошибке в LOGFILE (если не NDEBUG)
+/// и добавляет код ошибки в возращаемое значение
 #define ERR_HANDLE_MSSG_STACK(cond, err) \
     if ((cond)                           \
         ERR_HANDLED_MSSG(LOGFILE, err))  \
@@ -31,10 +34,6 @@ ERR_TYPE_STACK StackError_(const Stack* stk ERR_SUPPORT_DEFN)
     ERR_HANDLE_MSSG_STACK(
         GetHashStructStack_(stk) != stk->hash_struct_value,
         ERR_HASH_STRUCT_STACK);
-
-    ERR_HANDLE_MSSG_STACK(
-        GetHashDataStack_(stk) != stk->hash_data_value,
-        ERR_HASH_DATA_STACK);
 #endif
 
 #ifdef CANARY_PROTECT
@@ -69,6 +68,13 @@ ERR_TYPE_STACK StackError_(const Stack* stk ERR_SUPPORT_DEFN)
     }
     else
     {
+
+#ifdef HASH_PROTECT
+        ERR_HANDLE_MSSG_STACK(
+            GetHashDataStack_(stk) != stk->hash_data_value,
+            ERR_HASH_DATA_STACK);
+#endif
+
         ret_err |= StackErrorElems_(stk, (err) ? err : NULL);
     }
 

@@ -1,44 +1,12 @@
 
-/// @file stack_constants.h
+/// @file stack_error_settings.h
 ///
-/// @brief Stack constants
+/// @brief Тип и коды ошибок для stack.h
 
-#ifndef STACK_CONSTANTS_H
-#define STACK_CONSTANTS_H
-
-// POISON values
-
-const size_t POISON_SIZE_T_STACK = 0xDEAD512E;
-
-#ifdef CANARY_PROTECT
-    typedef uint64_t CANARY_STACK;
-    
-    const CANARY_STACK POISON_CANARY_STACK = 0xDEADCA17A129DEAD;
-
-    void fprintf_canary_stack(FILE* stream, const CANARY_STACK* canary);
-
-    void fprintf_canary_stack(FILE* stream, const CANARY_STACK* canary)
-    {
-        fprintf(stream, "%lx\n", *canary);
-    }
-#endif
-
-// Hash
-
-typedef uint32_t HASH_TYPE_STACK;
-
-void fprintf_hash_stack(FILE* stream, const HASH_TYPE_STACK hash);
-
-void fprintf_hash_stack(FILE* stream, const HASH_TYPE_STACK hash)
-{
-    fprintf(stream, "%u\n", hash);
-}
-
-// Errors
+#include <stdint.h>
 
 #define ERR_TYPE_STACK uint32_t
 
-/// Errors that might occur in Stack
 enum errors_stack : ERR_TYPE_STACK
 {
         ERR_BAD_STACK_PTR_STACK     = 1,       ///< Bad pointer to stack
@@ -77,6 +45,4 @@ enum errors_stack : ERR_TYPE_STACK
         ERR_VERIFICATOR_STACK       = 1 << 11, ///< Verificator finded error
 #define ERR_VERIFICATOR_STACK_MSSG                 "Verificator finded error"
 };
-
-#endif /* STACK_CONSTANTS_H */
 

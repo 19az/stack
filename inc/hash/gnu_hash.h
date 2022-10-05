@@ -1,11 +1,11 @@
 
 #include <stdint.h>
 
-/// @brief Hash function using gnu-hash algorithm
+/// @brief Хеш функция использующая gnu-hash алгоритм
 ///
-/// @param[in] start start of data to count hash
-/// @param[in] finish finish of data to count hash
+/// @param[in] start указатель на начало данных
+/// @param[in] finish указатель на конец данных
 ///
-/// @return unsigned 32 bits value
+/// @return uint32_t значение хеша
 uint32_t gnu_hash(const char *start, const char *finish);
 

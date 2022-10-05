@@ -1,20 +1,15 @@
 
 /// @file stack_hash.h
 ///
-/// @brief Hash protect in Stack
+/// @brief Хэш защита полей стека
 
-#ifndef STACK_HASH_H
-#define STACK_HASH_H
-
-/// @brief Get struct Stack hash
+/// @brief Посчитать хэш структуры стека
 ///
-/// @param[in] stk pointer to the Stack to get hash
+/// @param[in] stk указатель на стек
 HASH_TYPE_STACK GetHashStructStack_(const Stack* stk);
 
-/// @brief Get data Stack hash
+/// @brief Посчитать хэш массива стека
 ///
-/// @param[in] stk pointer to the Stack to get hash
+/// @param[in] stk указатель на стек
 HASH_TYPE_STACK GetHashDataStack_(const Stack* stk);
-
-#endif /* STACK_HASH_H */
 

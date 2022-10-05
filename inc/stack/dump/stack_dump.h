@@ -1,22 +1,23 @@
 
 /// @file stack_dump.h
 ///
-/// @brief Dumping stack into logfile
+/// @brief Дамп стека в логфайл
 
-#ifndef STACK_DUMP_H
-#define STACK_DUMP_H
-
-/// @brief Dumping stack info into logfile
+/// @brief Делает дамп стека в логфайл
 ///
-/// @param[in] logfile file where to write logs
-/// @param[in] stk stack to be dumped
+/// @param logfile поток, в который печатать дамп
+/// @param[in] stk указатель на стек
+///
+/// @note Если в logfile передан NULL, то
+/// дамп будет печататся в stderr
 void StackDump_(FILE* logfile, const Stack* stk);
 
 /// @brief Dumping stack elements into log file
 ///
-/// @param[in] logfile file where to write logs
-/// @param[in] stk stack to be dumped
+/// @param logfile поток, в который печатать дамп
+/// @param[in] stk указатель на стек
+///
+/// @note Если в logfile передан NULL, то
+/// дамп будет печататся в stderr
 void StackDumpElems_(FILE* logfile, const Stack* stk);
-
-#endif /* STACK_DUMP_H */
 

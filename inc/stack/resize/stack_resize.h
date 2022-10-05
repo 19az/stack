@@ -1,28 +1,27 @@
 
 /// @file stack_resize.h
 ///
-/// @brief Resize function for Stack
+/// @brief StackResize_() функция для изменения вместимости массива стека
 
-#ifndef STACK_RESIZE_H
-#define STACK_RESIZE_H
-
-/// @brief Changes capacity of given stack
+/// @brief Изменяет вместимость стека
 ///
-/// @param stk pointer to Stack to change capacity
-/// @param[in] new_size capacity which should fit in
-/// stack after resize
+/// @param stk указатель на стек
+/// @param[in] new_size количество элементов, которое
+/// должен вмешать стек после выполнения функции
 ///
-/// @note provides ERR_SUPPORT mode
+/// @note Есть вывод ошибок ERR_SUPPORT
 ///
-/// @see ERR_SUPPORT_DEFN
+/// @see ERR_SUPPORT_DECL
 void StackResize_(Stack* stk, size_t new_size ERR_SUPPORT_DECL);
 
-/// @brief Makes dump of stack and StackResize() arguments into logfile
+/// @brief Пишет дамп сообщение в логфайл с информацией о стеке
+/// и параметрами функции StackResize_()
 ///
-/// @param[in] logfile file where write dumps to
-/// @param[in] stk stack to dump
-/// @param[in] new_size new_size arg of StackResize_() function
+/// @param[in] logfile указатель на структуру FILE логфайла
+/// @param[in] stk указатель на стек
+/// @param[in] new_size new_size аргумент функции StackResize_()
+///
+/// @note Если в logfile передан NULL, то
+/// дамп будет печататься в stderr
 void StackResizeDump_(FILE* logfile, const Stack* stk, size_t new_size);
-
-#endif /* STACK_RESIZE_H */
 

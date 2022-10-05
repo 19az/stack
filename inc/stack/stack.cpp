@@ -1,4 +1,35 @@
 
+#define STACK_CPP
+#include "stack.h"
+
+#include "../error_handling/error_handling.h"
+
+/// @brief Указатель на левую канарейку массива стека
+#define L_CANARY_PTR_DATA (((CANARY_STACK*) stk->data) - 1)
+
+/// @brief Указатель на правую канарейку массива стека
+#define R_CANARY_PTR_DATA ((CANARY_STACK*) (stk->data + stk->capacity))
+
+/// @brief Позволяет добавть в дамп информацию о месте вызова дампа
+
+#ifdef NDEBUG
+    #define StackDump(logfile, stk) ((void) 0)
+#else
+    #define StackDump(logfile, stk) \
+        DUMP(logfile);              \
+                                    \
+        StackDump_(logfile, stk);   \
+
+#endif /* ifndef NDEBUG: StackDump() */
+
+/// @brief Запуск верификотор
+/// и обновление переменной ошибки значением,
+/// возвращенным верификатором
+#define StackError(logfile, stk)                          \
+    (StackError_(stk, (err) ? err : NULL)                 \
+        ERR_HANDLED_MSSG(logfile, ERR_VERIFICATOR_STACK))
+
+/// @brief Обновление хэша структуры и массива стека
 #ifdef HASH_PROTECT
     #define UPDATE_HASH_STACK(stk)                         \
         stk->hash_struct_value = GetHashStructStack_(stk); \
@@ -6,6 +37,14 @@
 #else
     #define UPDATE_HASH_STACK(stk) ((void) 0)
 #endif
+
+#define VERIFY_RETURN_STACK(stk, ret) \
+                                      \
+    if (StackError(LOGFILE, stk)) {   \
+        StackDump (LOGFILE, stk);     \
+                                      \
+        return ret;                   \
+    }
 
 void StackCtor_(Stack* stk, size_t new_size ERR_SUPPORT_DEFN)
 {
@@ -41,20 +80,13 @@ void StackCtor_(Stack* stk, size_t new_size ERR_SUPPORT_DEFN)
     if (ERR_CHECK_MSSG(LOGFILE, err_resize, ERR_REALLOC_STACK))
         return;
 
-    UPDATE_HASH_STACK(stk);
-
-    if (StackError(stk)) {
-        StackDump (stk);
-        return;
-    }
+    UPDATE_HASH_STACK  (stk );
+    VERIFY_RETURN_STACK(stk,);
 }
 
 void StackDtor(Stack* stk ERR_SUPPORT_DEFN)
 {
-    if (StackError(stk)) {
-        StackDump (stk);
-        return;
-    }
+    VERIFY_RETURN_STACK(stk,);
 
     ASSERT(stk->data != NULL &&
            stk->data != POISON_ELEM_T_PTR_STACK);
@@ -74,10 +106,7 @@ void StackDtor(Stack* stk ERR_SUPPORT_DEFN)
 
 void StackPush(Stack *stk, Elem_t elem ERR_SUPPORT_DEFN)
 {
-    if (StackError(stk)) {
-        StackDump (stk);
-        return;
-    }
+    VERIFY_RETURN_STACK(stk, );
 
     ERR_TYPE_STACK err_resize = 0;
     StackResize_(stk, stk->size + 1, &err_resize);
@@ -92,36 +121,28 @@ void StackPush(Stack *stk, Elem_t elem ERR_SUPPORT_DEFN)
 
     stk->data[stk->size++] = elem;
 
-    UPDATE_HASH_STACK(stk);
-
-    if (StackError(stk)) {
-        StackDump (stk);
-        return;
-    }
+    UPDATE_HASH_STACK  (stk );
+    VERIFY_RETURN_STACK(stk,);
 }
 
 Elem_t StackPop(Stack *stk ERR_SUPPORT_DEFN)
 {
 #ifdef POISON_ELEM_T_PROTECT
-    Elem_t ret_value = POISON_ELEM_T_STACK;
+    Elem_t default_ret_value = POISON_ELEM_T_STACK;
 #else
-    Elem_t ret_value = Elem_t{};
+    Elem_t default_ret_value = Elem_t{};
 #endif
     
-    if (StackError(stk)) {
-        StackDump (stk);
+    VERIFY_RETURN_STACK(stk, default_ret_value);
 
-        return ret_value;
-    }
-
-    if (stk->size == 0) return ret_value;
+    if (stk->size == 0) return default_ret_value;
 
     ASSERT(stk->data != NULL &&
            stk->data != POISON_ELEM_T_PTR_STACK);
 
     ASSERT(stk->capacity >= stk->size);
 
-    ret_value = stk->data[stk->size - 1];
+    Elem_t ret_value = stk->data[stk->size - 1];
 
 #ifdef POISON_ELEM_T_PROTECT
     stk->data[stk->size - 1] = POISON_ELEM_T_STACK;
@@ -132,21 +153,22 @@ Elem_t StackPop(Stack *stk ERR_SUPPORT_DEFN)
 
     if (ERR_CHECK_MSSG(LOGFILE, err_resize, ERR_REALLOC_STACK))
     {
-        return ret_value;
+        return default_ret_value;
     }
     
     stk->size--;
 
-    UPDATE_HASH_STACK(stk);
-
-    if (StackError(stk)) {
-        StackDump (stk);
-
-        return ret_value;
-    }
+    UPDATE_HASH_STACK  (stk);
+    VERIFY_RETURN_STACK(stk, default_ret_value);
 
     return ret_value;
 }
 
-#undef UPDATE_HASH_STACK
-    
+#include "dump/stack_dump.cpp"
+#include "error/stack_error.cpp"
+#include "resize/stack_resize.cpp"
+
+#ifdef HASH_PROTECT
+    #include "hash/stack_hash.cpp"
+#endif
+

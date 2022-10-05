@@ -1,30 +1,27 @@
 
-#include <stdint.h>
-
-#include "stack_elem_t.h"
-FILE* const LOGFILE = fopen(logfilename, "w");
+#include <stdio.h>
 
 #include "inc/stack/stack.h"
 
 int main() {
 
-    Stack stk1{};
+    Stack stk{};
 
-    StackCtor(&stk1, 0);
+    StackCtor(&stk, 1000);
 
-    const size_t n_elems = 654;
+    const size_t n_elems = 19;
 
     for (size_t index = 0; index < n_elems; index++)
     {
-        StackPush(&stk1, (uint32_t) index);
+        StackPush(&stk, (uint32_t) index);
     }
 
     for (size_t index = 0; index < n_elems; index++)
     {
-        StackPop(&stk1);
+        StackPop(&stk);
     }
 
-    StackDtor(&stk1);
+    StackDtor(&stk);
 
     fclose(LOGFILE);
 

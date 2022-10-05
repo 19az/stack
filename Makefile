@@ -5,7 +5,7 @@ include debugflags
 EXE = stack
 SOURCES = main.cpp
 INCLUDES_DIR = inc
-include $(INCLUDES_DIR)/hash/Makefile
+include $(INCLUDES_DIR)/stack/Makefile
 
 OBJECTS = $(SOURCES:.cpp=.o)
 

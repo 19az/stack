@@ -1,13 +1,14 @@
 
+/// @file stack.h
+///
+/// @brief Структура данных стек и функции для работы с ним
+
 #ifndef STACK_H
 #define STACK_H
 
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "constants/stack_constants.h"
+#include "settings/stack_settings.h"
 #define ERR_TYPE ERR_TYPE_STACK
 #include "../error_handling/error_handling.h"
 
@@ -41,14 +42,21 @@ struct Stack
 #include "resize/stack_resize.h"
 
 #ifdef HASH_PROTECT
-#include "hash/stack_hash.h"
+    #include "hash/stack_hash.h"
 #endif
 
-/// @brief Constructs object of Stack with given size
+/// @brief Конструктор стека, принимающий размер,
+/// который должен вмещать стек
 ///
-/// @param stk pointer to the object to construct
-/// @param[in] size size of constructing stack
+/// @param stk указатель на стек
+/// @param[in] size желаемый размер
+///
+/// @note Есть режим возврата ошибок ERR_SUPPORT
+///
+/// @see ERR_SUPPORT_DECL
 void StackCtor_(Stack* stk, size_t size ERR_SUPPORT_DECL);
+
+/// @brief Позволяет запоминать информацию о переменной стека
 
 #ifdef NDEBUG
     #define StackCtor(stk, size) StackCtor_(stk, size)
@@ -56,62 +64,42 @@ void StackCtor_(Stack* stk, size_t size ERR_SUPPORT_DECL);
     #define StackCtor(stk, size)           \
         (stk)->var_data = VAR_INFO(stk);   \
                                            \
-        setvbuf(LOGFILE, NULL, _IONBF, 0); \
-                                           \
         StackCtor_(stk, size);
 
 #endif
 
-/// @brief Destructs object of Stack
+/// @brief Деструктор стека
+///
+/// @param stk указатель на стек
+///
+/// @note Есть режим возврата ошибок ERR_SUPPORT
+///
+/// @see ERR_SUPPORT_DECL
 void StackDtor(Stack* stk ERR_SUPPORT_DECL);
 
-/// @brief Adds new element to the stack
+/// @brief Добавляет новый элемент в стек
 ///
-/// @param stk pointer to the stack
-/// @param[in] elem element to add
+/// @param stk указатель на стек
+/// @param[in] elem добавляемый элемент
+///
+/// @note Есть режим возврата ошибок ERR_SUPPORT
+///
+/// @see ERR_SUPPORT_DECL
 void StackPush(Stack* stk, Elem_t elem ERR_SUPPORT_DECL);
 
-/// @brief Removes the last element from the stack and returns it
+/// @brief Удаляет последний элемент из стека и возвращает его
 ///
-/// @param stk pointer to the stack
+/// @param stk указатель на стек
 ///
-/// @return removed element
+/// @return удаленный элемент типа Elem_t
+///
+/// @note Есть режим возврата ошибок ERR_SUPPORT
+///
+/// @see ERR_SUPPORT_DECL
 Elem_t StackPop(Stack* stk ERR_SUPPORT_DECL);
 
-#define L_CANARY_PTR_DATA (((CANARY_STACK*) stk->data) - 1)
-#define R_CANARY_PTR_DATA ((CANARY_STACK*) (stk->data + stk->capacity))
-
-#ifdef NDEBUG
-    #define StackDump(stk) ((void) 0)
-#else
-    #define StackDump(stk)        \
-        DUMP(LOGFILE);            \
-                                  \
-        StackDump_(LOGFILE, stk);
-
-#endif /* ifndef NDEBUG: StackDump() */
-
-#define StackError(stk)                                   \
-    (StackError_(stk, (err) ? err : NULL)                 \
-        ERR_HANDLED_MSSG(LOGFILE, ERR_VERIFICATOR_STACK))
-
-#include "stack.cpp"
-#include "dump/stack_dump.cpp"
-#include "error/stack_error.cpp"
-#include "resize/stack_resize.cpp"
-
-#ifdef HASH_PROTECT
-#include "hash/stack_hash.cpp"
+#ifndef STACK_CPP
+    #undef ERR_TYPE
 #endif
-
-#undef StackDump
-#undef StackError
-
-#undef LOGFILE
-
-#undef L_CANARY_DATA
-#undef R_CANARY_DATA
-
-#undef ERR_TYPE
 
 #endif /* STACK_H */
