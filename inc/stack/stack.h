@@ -55,6 +55,18 @@ struct Stack
     #include "hash/stack_hash.h"
 #endif
 
+/// @brief Позволяет добавть в дамп информацию о месте вызова дампа
+
+#ifdef NDEBUG
+    #define StackDump(logfile, stk) ((void) 0)
+#else
+    #define StackDump(logfile, stk) \
+        DUMP(logfile);              \
+                                    \
+        StackDump_(logfile, stk);
+
+#endif
+
 /// @brief Конструктор стека, принимающий размер,
 /// который должен вмещать стек
 ///
@@ -110,6 +122,8 @@ Elem_t StackPop(Stack* stk ERR_SUPPORT_DECL);
 
 #ifndef STACK_CPP
     #undef ERR_TYPE
+    #undef L_CANARY_PTR_DATA
+    #undef R_CANARY_PTR_DATA
 #endif
 
 #endif /* STACK_H */

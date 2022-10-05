@@ -4,18 +4,6 @@
 
 #include "../error_handling/error_handling.h"
 
-/// @brief Позволяет добавть в дамп информацию о месте вызова дампа
-
-#ifdef NDEBUG
-    #define StackDump(logfile, stk) ((void) 0)
-#else
-    #define StackDump(logfile, stk) \
-        DUMP(logfile);              \
-                                    \
-        StackDump_(logfile, stk);   \
-
-#endif /* ifndef NDEBUG: StackDump() */
-
 /// @brief Запуск верификотор
 /// и обновление переменной ошибки значением,
 /// возвращенным верификатором
