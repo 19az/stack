@@ -25,6 +25,16 @@ struct Stack
 
     Elem_t*      data     = POISON_ELEM_T_PTR_STACK;
 
+#ifdef CANARY_PROTECT
+
+    /// @brief Указатель на левую канарейку массива стека
+    #define L_CANARY_PTR_DATA (((CANARY_STACK*) stk->data) - 1)
+
+    /// @brief Указатель на правую канарейку массива стека
+    #define R_CANARY_PTR_DATA ((CANARY_STACK*) (stk->data + stk->capacity))
+
+#endif
+
     size_t       size     = POISON_SIZE_T_STACK;
     size_t       capacity = POISON_SIZE_T_STACK;
     
