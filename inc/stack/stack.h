@@ -103,13 +103,9 @@ void StackPush(Stack* stk, Elem_t elem ERR_SUPPORT_DECL);
 Elem_t StackPop(Stack* stk ERR_SUPPORT_DECL);
 
 #ifndef STACK_CPP
-    
     #undef ERR_TYPE
-
     #include "../error_handling/undef_error_handling.h"
-
     #include "settings/undef.h"
-
-#endif /* STACK_CPP */
+#endif
 
 #endif /* STACK_H */
