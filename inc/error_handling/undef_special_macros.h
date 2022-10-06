@@ -1,4 +1,6 @@
 
+#ifdef SPECIAL_MACROS_H
+
 #undef GET_ARG_1
 #undef GET_ARG_2
 #undef GET_ARG_3
@@ -54,3 +56,6 @@
 
 #undef MAP
 #undef _MAP
+
+#endif /* ifdef SPECIAL_MACROS_H */
+

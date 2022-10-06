@@ -1,14 +1,15 @@
 
 /// @file error_handling.h
-/// @brief Макросы для удобной обработки и логгирование ошибок
+///
+/// @brief Макросы для удобной обработки и логгирования ошибок
+
+#ifndef ERROR_HANDLING_H
+#define ERROR_HANDLING_H
 
 #include <stdio.h>
 #include <stdint.h>
 
 #include "special_macros.h"
-
-#ifndef ERROR_HANDLING_H
-#define ERROR_HANDLING_H
 
 /// @brief Стуктура с информацией о переменной
 typedef struct
@@ -19,8 +20,6 @@ typedef struct
     const char*  file      = NULL; ///< файл создания
           size_t line      = 0;    ///< номер строки создания
 } VAR_DATA;
-
-#endif /* ERROR_HANDLING_H */
 
 /// @brief Заполняет структуру VAR_DATA информацией
 #define VAR_INFO(var)                 \
@@ -81,8 +80,8 @@ typedef struct
 #ifdef NDEBUG
     #define ASSERT_MSSG(cond, msg) ((void)0)
 #else
-    #define ASSERT_MSSG(cond, msg)                 \
-        if (!(cond)) ERR_REPORT_MSSG(stderr, msg);
+    #define ASSERT_MSSG(cond, msg)                       \
+        ( (!(cond)) ? ERR_REPORT_MSSG(stderr, msg) : 0 )
 #endif
 
 /// @brief "Перегрузка" ассерта от количества аргументов: проверяется
@@ -122,4 +121,6 @@ typedef struct
                                               \
         fflush(logfile);
 #endif
+
+#endif /* ERROR_HANDLING_H */
 

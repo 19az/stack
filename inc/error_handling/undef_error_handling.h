@@ -1,5 +1,7 @@
 
-#undef VAR_INFO
+#ifdef ERROR_HANDLING_H
+
+//#undef VAR_INFO needed in StackCtor()
 
 #undef ERR_REPORT_MSSG
 
@@ -22,3 +24,5 @@
 #undef DUMP
 
 #include "undef_special_macros.h"
+
+#endif /* ifdef ERROR_HANDLING_H */
