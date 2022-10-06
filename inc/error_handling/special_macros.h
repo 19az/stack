@@ -1,7 +1,4 @@
 
-#ifndef SPECIAL_MACROS_H
-#define SPECIAL_MACROS_H
-
 #define GET_ARG_1(a,...) a
 #define GET_ARG_2(a,b,...) b
 #define GET_ARG_3(a,b,c,...) c
@@ -70,6 +67,4 @@
     /* Do nothing, just terminate */ \
   )
 #define _MAP() MAP
-
-#endif /* SPECIAL_MACROS_H */
 
