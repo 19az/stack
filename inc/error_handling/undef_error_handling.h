@@ -23,6 +23,8 @@
 
 #undef DUMP
 
+#undef ERROR_HANDLING_H
+
 #include "undef_special_macros.h"
 
 #endif /* ifdef ERROR_HANDLING_H */
